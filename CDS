@@ -1,0 +1,23 @@
+namespace my.package;
+
+entity IncomingInvoice {
+  key InvoiceNumber: String(10);
+  InvoiceDate: Date;
+  CompanyCode: String(4);
+  DocumentDate: Date;
+  PostingDate: Date;
+  Reference: String(50);
+  Currency: String(5);
+  GrossAmount: Decimal(23,2);
+}
+
+entity InvoiceItem {
+  key InvoiceNumber: String(10);
+  key ItemNumber: Integer;
+  GLAccount: String(10);
+  Quantity: Decimal(23,3);
+  Unit: String(3);
+  NetAmount: Decimal(23,2);
+  TaxAmount: Decimal(23,2);
+  TaxCode: String(2);
+}
