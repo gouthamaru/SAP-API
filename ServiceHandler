@@ -1,0 +1,35 @@
+namespace my.app;
+
+using my.app.types as types from './types';
+
+service {
+    "my.app.InvoiceService" as "InvoiceService" key
+        createInvoice(invoice: Invoice) returns Invoice;
+} implementation {
+    define function createInvoice(invoice: Invoice) returns Invoice {
+        data(bapi_invoice_header) = cast(zcl_bapi_invoice_create1=>ty_bapi_invoice_header)(
+            i_header = VALUE #( supplier_id = invoice.supplierID
+                                  doc_date = invoice.invoiceDate
+                                  posting_date = invoice.postingDate
+                                  ref_doc_no = invoice.reference
+                                  currency = invoice.currency
+                                  payment_terms = invoice.paymentTerms
+                                  payment_method = invoice.paymentMethod
+                                  company_code = invoice.companyCode
+                                  doc_type = 'ZMI'
+                                  ).
+ 
+        data(bapi_invoice_item) = cast(zcl_bapi_invoice_create1=>ty_bapi_invoice_item)(
+            i_items = VALUE #( ( gl_account = '0000000001'
+                                 item_amount = invoice.amount
+                                 ) )
+            ).
+ 
+        data(bapi_return) = VALUE #( ( type = 'E'
+                                       id = '1'
+                                       number = '000'
+                                       message = 'Error message'
+                                       log_no = ''
+                                       log_msg = ''))
+                                       }
+
