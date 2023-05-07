@@ -1,0 +1,39 @@
+using com.yourcompany.myapp as myapp alias AccountingDocument;
+
+service {
+  define createAccountingDocument as create function
+    with {
+      description: 'Creates a new accounting document'
+    }
+    parameters {
+      document: AccountingDocument.AccountingDocument;
+    }
+    returns AccountingDocument.AccountingDocument;
+
+  define getAccountingDocumentById as select function
+    with {
+      description: 'Gets an accounting document by ID'
+    }
+    parameters {
+      id: Integer32;
+    }
+    returns AccountingDocument.AccountingDocument;
+
+  define updateAccountingDocument as update function
+    with {
+      description: 'Updates an accounting document'
+    }
+    parameters {
+      document: AccountingDocument.AccountingDocument;
+    }
+    returns AccountingDocument.AccountingDocument;
+
+  define deleteAccountingDocument as delete function
+    with {
+      description: 'Deletes an accounting document'
+    }
+    parameters {
+      id: Integer32;
+    }
+    returns Boolean;
+}
