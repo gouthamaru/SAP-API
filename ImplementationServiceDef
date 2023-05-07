@@ -1,0 +1,38 @@
+using com.yourcompany.myapp as myapp alias AccountingDocument;
+
+service {
+
+  define createAccountingDocument as create function
+    with {
+      description: 'Creates a new accounting document'
+    }
+    parameters {
+      document: AccountingDocument.AccountingDocument;
+    }
+    returns AccountingDocument.AccountingDocument
+  {
+    let accountingDocument = AccountingDocument.createEntity();
+    accountingDocument.businessTransactionType = document.businessTransactionType;
+    accountingDocument.postingDate = document.postingDate;
+    accountingDocument.documentDate = document.documentDate;
+    accountingDocument.currency = document.currency;
+    accountingDocument.headerText = document.headerText;
+
+    let items = [];
+    for (let item of document.items) {
+      let accountingDocumentItem = AccountingDocument.Item.createEntity();
+      accountingDocumentItem.account = item.account;
+      accountingDocumentItem.amount = item.amount;
+      accountingDocumentItem.currency = item.currency;
+      accountingDocumentItem.text = item.text;
+      accountingDocumentItem.document = accountingDocument;
+      items.push(accountingDocumentItem);
+    }
+    accountingDocument.items = items;
+
+    AccountingDocument.saveEntity(accountingDocument);
+
+    return accountingDocument;
+  }
+
+}
