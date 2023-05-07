@@ -1,0 +1,31 @@
+namespace my.package;
+
+@OData.publish: true
+service {
+  @OData.entitySet: 'IncomingInvoices'
+  entity IncomingInvoice as projection on my.package.IncomingInvoice;
+
+  @OData.entitySet: 'InvoiceItems'
+  entity InvoiceItem as projection on my.package.InvoiceItem;
+
+  @OData.create: true
+  @OData.processing: #Core.Update
+  function createIncomingInvoice(
+    @OData.body: {type: my.package.IncomingInvoice}
+    incomingInvoice: my.package.IncomingInvoice,
+    @OData.body: {type: my.package.InvoiceItem[]}
+    invoiceItems: my.package.InvoiceItem[]
+  ) returns my.package.IncomingInvoice;
+
+  @OData.read: true
+  @OData.pageSize.limit: 100
+  function getIncomingInvoice(
+    key InvoiceNumber: String(10)
+  ) returns my.package.IncomingInvoice;
+
+  @OData.read: true
+  @OData.pageSize.limit: 100
+  function getInvoiceItems(
+    key InvoiceNumber: String(10)
+  ) returns my.package.InvoiceItem[];
+}
